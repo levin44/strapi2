@@ -77,7 +77,7 @@ export default function Pricing({ data }: PriceProps) {
                       : "dark:text-gray-400"
                   }`}
                 >
-                  {plan.product_features.data.map((feature: Feature) => (
+                  {plan.product_features?.data.map((feature: Feature) => (
                     <li key={feature.id} className="flex mb-2 space-x-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

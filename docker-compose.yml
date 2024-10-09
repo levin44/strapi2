@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  strapi:
+    build:
+      context: .  # Use the current directory as the build context
+      dockerfile: Dockerfile  # Specify the Dockerfile in the root directory
+    container_name: strapi_app_nisal
+    ports:
+      - '3000:3000'  # Map the container port 3000 to host port 3000
+      - '1337:1337'  # Map the container port 1337 to host port 1337
+    environment:
+      DATABASE_HOST: "db"
+    volumes:
+      - ./backend:/app/backend  # Mount the backend directory for live updates
+      - ./frontend:/app/frontend  # Mount the frontend directory if needed
+    env_file:  # Load the environment variables from the .env file
+      - ./backend/.env
+    depends_on:
+      - db  # Ensure the db service is started before the app
+    networks:
+      - app-network
+
+  db:
+    image: postgres:latest  # Use the latest PostgreSQL image
+    container_name: postgres_db_nisal
+    ports:
+      - '5432:5555'  # Map the container port 5432 to host port 5432
+    environment:
+      POSTGRES_DB: "testdb_nisal" #this is the database name
+      POSTGRES_USER: "testdb_owner"
+      POSTGRES_PASSWORD: "LKqhY6okCa1O"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist PostgreSQL data
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:  # Create a named volume for PostgreSQL data
+
+networks:
+  app-network:
+    driver: bridge
